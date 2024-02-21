@@ -2,28 +2,72 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Calculateur de Trajet avec Waze</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+    <title>TravelTune</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .ui-autocomplete {
+            position: absolute;
+            z-index: 1050; /* S'assure qu'il est au-dessus des autres éléments Bootstrap */
+            max-height: 200px;
+            overflow-y: auto; /* Permet le défilement si la liste est longue */
+            overflow-x: hidden;
+            border: 1px solid #ddd;
+            border-radius: 0.25rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0,0,0,.1);
+            width: auto; /* S'adapte à la largeur du champ de saisie */
+        }
+        .ui-autocomplete .ui-menu-item a {
+            border-bottom: 1px solid #ddd; /* Sépare les items */
+            padding: 8px 10px;
+            color: #333;
+            display: block;
+            font-weight: normal;
+        }
+        .ui-autocomplete .ui-menu-item a.ui-state-focus,
+        .ui-autocomplete .ui-menu-item a:hover {
+            background-color: #f8f9fa; /* Couleur de fond au survol */
+            color: #212529;
+        }
+        .ui-autocomplete .ui-menu-item:last-child a {
+            border-bottom: none; /* Pas de bordure en bas du dernier élément */
+        }
+    </style>
 </head>
 <body>
-    <h2>Calculateur de Trajet avec Waze</h2>
-    <form method="POST">
-        <label for="start_address">Adresse de départ:</label><br>
-        <input type="text" id="start_address" name="start_address" autocomplete="off"><br>
-        <input type="hidden" id="start_lat" name="start_lat">
-        <input type="hidden" id="start_lng" name="start_lng">
-        <label for="end_address">Adresse d'arrivée:</label><br>
-        <input type="text" id="end_address" name="end_address" autocomplete="off"><br>
-        <input type="hidden" id="end_lat" name="end_lat">
-        <input type="hidden" id="end_lng" name="end_lng"><br><br>
-        <input type="submit" value="Calculer">
-    </form>
-    <br>
-    {% if result %}
-    <div>Résultat: {{ result }}</div>
-    {% endif %}
+    <div class="container">
+        <h2 class="my-4">Calculateur de Trajet avec Waze</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="start_address">Adresse de départ:</label>
+                <input type="text" class="form-control" id="start_address" name="start_address" autocomplete="off">
+                <input type="hidden" id="start_lat" name="start_lat">
+                <input type="hidden" id="start_lng" name="start_lng">
+            </div>
+            <div class="form-group">
+                <label for="end_address">Adresse d'arrivée:</label>
+                <input type="text" class="form-control" id="end_address" name="end_address" autocomplete="off">
+                <input type="hidden" id="end_lat" name="end_lat">
+                <input type="hidden" id="end_lng" name="end_lng">
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="avoid_tolls" name="avoid_tolls">
+                <label class="form-check-label" for="avoid_tolls">Éviter les péages</label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Calculer</button>
+        </form>
+        {% if result %}
+        <br>
+        <div class="alert alert-success" role="alert">
+            Résultat: {{ result }}
+        </div>
+        {% endif %}
+    </div>
     <script>
     $(function() {
         function autocompletion(elementId, latFieldId, lngFieldId) {
