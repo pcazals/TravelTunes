@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de Trajet Waze</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-12">
+            <img src="logo.png" alt="Logo" class="float-left" style="max-height: 60px;">
+            <h1>Calculateur de Trajet Waze</h1>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <form method="post">
+                <div class="form-group">
+                    <label for="start_address">Adresse de départ</label>
+                    <input type="text" class="form-control" id="start_address" name="start_address" required>
+                </div>
+                <div class="form-group">
+                    <label for="end_address">Adresse d'arrivée</label>
+                    <input type="text" class="form-control" id="end_address" name="end_address" required>
+                </div>
+                <div class="form-group">
+                    <label for="region">Région</label>
+                    <select class="form-control" id="region" name="region">
+                        <option value="EU">Europe</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Calculer</button>
+            </form>
+        </div>
+    </div>
+    {% if travel_time %}
+    <div class="row mt-3">
+        <div class="col-12">
+            <p>Temps de trajet : {{ travel_time }} minutes</p>
+            <p>Distance : {{ distance }} km</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
