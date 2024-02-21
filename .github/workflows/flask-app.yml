@@ -13,10 +13,8 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
+  build-docker:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -36,7 +34,9 @@ jobs:
         sleep 5 # Donne un peu de temps au conteneur pour démarrer
         curl --retry 10 --retry-delay 5 -v http://127.0.0.1:5000/
 
-### PYTEST
+  tests:
+    runs-on: ubuntu-latest
+    steps:
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
