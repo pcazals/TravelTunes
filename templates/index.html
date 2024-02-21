@@ -6,49 +6,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <style>
-        .ui-autocomplete {
-            position: absolute;
-            z-index: 1000;
-            cursor: default;
-            padding: 0;
-            margin-top: 2px;
-            list-style: none;
-            background-color: #ffffff;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-shadow: 0 5px 10px rgba(0,0,0,.2);
-        }
-        .ui-autocomplete .ui-menu-item a {
-            display: block;
-            padding: 8px;
-            clear: both;
-            font-weight: normal;
-            line-height: 1.42857143;
-            color: #333333;
-            white-space: nowrap;
-        }
-        .ui-autocomplete .ui-menu-item a.ui-state-focus {
-            background-color: #f5f5f5;
-        }
-    </style>
 </head>
 <body>
     <h2>Calculateur de Trajet avec Waze</h2>
     <form method="POST">
         <label for="start_address">Adresse de départ:</label><br>
         <input type="text" id="start_address" name="start_address" autocomplete="off"><br>
+        <input type="hidden" id="start_lat" name="start_lat">
+        <input type="hidden" id="start_lng" name="start_lng">
         <label for="end_address">Adresse d'arrivée:</label><br>
-        <input type="text" id="end_address" name="end_address" autocomplete="off"><br><br>
+        <input type="text" id="end_address" name="end_address" autocomplete="off"><br>
+        <input type="hidden" id="end_lat" name="end_lat">
+        <input type="hidden" id="end_lng" name="end_lng"><br><br>
         <input type="submit" value="Calculer">
     </form>
     <br>
-    {% if result %}
-    <div>Résultat: {{ result }}</div>
-    {% endif %}
     <script>
     $(function() {
-        function autocompletion(elementId) {
+        function autocompletion(elementId, latFieldId, lngFieldId) {
             $(`#${elementId}`).autocomplete({
                 source: function(request, response) {
                     $.ajax({
@@ -58,7 +33,9 @@
                             response($.map(data.features, function(item) {
                                 return {
                                     label: item.properties.label,
-                                    value: item.properties.label
+                                    value: item.properties.label,
+                                    lat: item.geometry.coordinates[1], // Latitude
+                                    lng: item.geometry.coordinates[0] // Longitude
                                 };
                             }));
                         }
@@ -67,12 +44,14 @@
                 minLength: 3,
                 select: function(event, ui) {
                     $(`#${elementId}`).val(ui.item.value);
+                    $(`#${latFieldId}`).val(ui.item.lat); // Remplit le champ caché de la latitude
+                    $(`#${lngFieldId}`).val(ui.item.lng); // Remplit le champ caché de la longitude
                     return false;
                 }
             });
         }
-        autocompletion("start_address");
-        autocompletion("end_address");
+        autocompletion("start_address", "start_lat", "start_lng");
+        autocompletion("end_address", "end_lat", "end_lng");
     });
     </script>
 </body>
