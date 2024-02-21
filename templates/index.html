@@ -21,6 +21,9 @@
         <input type="submit" value="Calculer">
     </form>
     <br>
+    {% if result %}
+    <div>Résultat: {{ result }}</div>
+    {% endif %}
     <script>
     $(function() {
         function autocompletion(elementId, latFieldId, lngFieldId) {
