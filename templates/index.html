@@ -2,64 +2,78 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Calculateur de trajet Waze</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Calculateur de Trajet avec Waze</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <style>
-        .container {
-            margin-top: 20px;
+        .ui-autocomplete {
+            position: absolute;
+            z-index: 1000;
+            cursor: default;
+            padding: 0;
+            margin-top: 2px;
+            list-style: none;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 5px 10px rgba(0,0,0,.2);
         }
-        #result {
-            margin-top: 20px;
+        .ui-autocomplete .ui-menu-item a {
+            display: block;
+            padding: 8px;
+            clear: both;
+            font-weight: normal;
+            line-height: 1.42857143;
+            color: #333333;
+            white-space: nowrap;
+        }
+        .ui-autocomplete .ui-menu-item a.ui-state-focus {
+            background-color: #f5f5f5;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="text-center mb-4">
-            <h1>Calculateur de trajet Waze</h1>
-        </div>
-        <form id="routeForm">
-            <div class="form-group">
-                <label for="from">Adresse de départ:</label>
-                <input type="text" class="form-control" id="from" name="from" required>
-            </div>
-            <div class="form-group">
-                <label for="to">Adresse d'arrivée:</label>
-                <input type="text" class="form-control" id="to" name="to" required>
-            </div>
-            <div class="form-check mb-3">
-                <input type="checkbox" class="form-check-input" id="avoidTolls" name="avoidTolls">
-                <label class="form-check-label" for="avoidTolls">Éviter les péages</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Calculer</button>
-        </form>
-        <div id="result"></div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <h2>Calculateur de Trajet avec Waze</h2>
+    <form method="POST">
+        <label for="start_address">Adresse de départ:</label><br>
+        <input type="text" id="start_address" name="start_address" autocomplete="off"><br>
+        <label for="end_address">Adresse d'arrivée:</label><br>
+        <input type="text" id="end_address" name="end_address" autocomplete="off"><br><br>
+        <input type="submit" value="Calculer">
+    </form>
+    <br>
+    {% if result %}
+    <div>Résultat: {{ result }}</div>
+    {% endif %}
     <script>
-        document.getElementById('routeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const from = document.getElementById('from').value;
-            const to = document.getElementById('to').value;
-            const avoidTolls = document.getElementById('avoidTolls').checked;
-            
-            fetch('/calculate-route', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+    $(function() {
+        function autocompletion(elementId) {
+            $(`#${elementId}`).autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(request.term)}`,
+                        type: 'GET',
+                        success: function(data) {
+                            response($.map(data.features, function(item) {
+                                return {
+                                    label: item.properties.label,
+                                    value: item.properties.label
+                                };
+                            }));
+                        }
+                    });
                 },
-                body: `from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&avoidTolls=${avoidTolls}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('result').textContent = JSON.stringify(data);
-            })
-            .catch(error => console.error('Error:', error));
-        });
-        </script>
-        
+                minLength: 3,
+                select: function(event, ui) {
+                    $(`#${elementId}`).val(ui.item.value);
+                    return false;
+                }
+            });
+        }
+        autocompletion("start_address");
+        autocompletion("end_address");
+    });
+    </script>
 </body>
 </html>

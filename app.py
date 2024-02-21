@@ -1,24 +1,24 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, request, render_template
 import WazeRouteCalculator
-import requests
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/calculate-route', methods=['POST'])
-def calculate_route():
-    from_address = request.form['from']
-    to_address = request.form['to']
-    avoid_tolls = 'avoidTolls' in request.form
-    try:
-        route = WazeRouteCalculator.WazeRouteCalculator(from_address, to_address, 'FR')
-        route_info = route.calc_route_info(avoid_tolls)
-        return jsonify(route_info)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 400
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        start_address = request.form['start_address']
+        end_address = request.form['end_address']
+        region = 'EU' 
+        try:
+            route = WazeRouteCalculator.WazeRouteCalculator(start_address, end_address, region)
+            route_info = route.calc_route_info()
+            result = f"Durée estimée: {route_info[0]} minutes, Distance: {route_info[1]} km"
+        except Exception as e:
+            result = f"Erreur: {str(e)}"
+        
+        return render_template('index.html', result=result)
+    else:
+        return render_template('index.html', result=None)
 
 if __name__ == '__main__':
     app.run(debug=True)
