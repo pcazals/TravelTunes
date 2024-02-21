@@ -11,18 +11,18 @@
     <style>
         .ui-autocomplete {
             position: absolute;
-            z-index: 1050; /* S'assure qu'il est au-dessus des autres éléments Bootstrap */
+            z-index: 1050;
             max-height: 200px;
-            overflow-y: auto; /* Permet le défilement si la liste est longue */
+            overflow-y: auto;
             overflow-x: hidden;
             border: 1px solid #ddd;
             border-radius: 0.25rem;
             background-color: #ffffff;
             box-shadow: 0 4px 6px rgba(0,0,0,.1);
-            width: auto; /* S'adapte à la largeur du champ de saisie */
+            width: auto;
         }
         .ui-autocomplete .ui-menu-item a {
-            border-bottom: 1px solid #ddd; /* Sépare les items */
+            border-bottom: 1px solid #ddd;
             padding: 8px 10px;
             color: #333;
             display: block;
@@ -30,11 +30,11 @@
         }
         .ui-autocomplete .ui-menu-item a.ui-state-focus,
         .ui-autocomplete .ui-menu-item a:hover {
-            background-color: #f8f9fa; /* Couleur de fond au survol */
+            background-color: #f8f9fa;
             color: #212529;
         }
         .ui-autocomplete .ui-menu-item:last-child a {
-            border-bottom: none; /* Pas de bordure en bas du dernier élément */
+            border-bottom: none;
         }
     </style>
 </head>
@@ -81,8 +81,8 @@
                                 return {
                                     label: item.properties.label,
                                     value: item.properties.label,
-                                    lat: item.geometry.coordinates[1], // Latitude
-                                    lng: item.geometry.coordinates[0] // Longitude
+                                    lat: item.geometry.coordinates[1],
+                                    lng: item.geometry.coordinates[0]
                                 };
                             }));
                         }
@@ -91,8 +91,8 @@
                 minLength: 3,
                 select: function(event, ui) {
                     $(`#${elementId}`).val(ui.item.value);
-                    $(`#${latFieldId}`).val(ui.item.lat); // Remplit le champ caché de la latitude
-                    $(`#${lngFieldId}`).val(ui.item.lng); // Remplit le champ caché de la longitude
+                    $(`#${latFieldId}`).val(ui.item.lat);
+                    $(`#${lngFieldId}`).val(ui.item.lng);
                     return false;
                 }
             });
