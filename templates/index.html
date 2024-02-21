@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculateur de Trajet avec Waze</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+    <h2>Calculateur de Trajet avec Waze</h2>
+    <form method="POST">
+        <label for="start_address">Adresse de départ:</label><br>
+        <input type="text" id="start_address" name="start_address" autocomplete="off"><br>
+        <input type="hidden" id="start_lat" name="start_lat">
+        <input type="hidden" id="start_lng" name="start_lng">
+        <label for="end_address">Adresse d'arrivée:</label><br>
+        <input type="text" id="end_address" name="end_address" autocomplete="off"><br>
+        <input type="hidden" id="end_lat" name="end_lat">
+        <input type="hidden" id="end_lng" name="end_lng"><br><br>
+        <input type="submit" value="Calculer">
+    </form>
+    <br>
+    {% if result %}
+    <div>Résultat: {{ result }}</div>
+    {% endif %}
+    <script>
+    $(function() {
+        function autocompletion(elementId, latFieldId, lngFieldId) {
+            $(`#${elementId}`).autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(request.term)}`,
+                        type: 'GET',
+                        success: function(data) {
+                            response($.map(data.features, function(item) {
+                                return {
+                                    label: item.properties.label,
+                                    value: item.properties.label,
+                                    lat: item.geometry.coordinates[1], // Latitude
+                                    lng: item.geometry.coordinates[0] // Longitude
+                                };
+                            }));
+                        }
+                    });
+                },
+                minLength: 3,
+                select: function(event, ui) {
+                    $(`#${elementId}`).val(ui.item.value);
+                    $(`#${latFieldId}`).val(ui.item.lat); // Remplit le champ caché de la latitude
+                    $(`#${lngFieldId}`).val(ui.item.lng); // Remplit le champ caché de la longitude
+                    return false;
+                }
+            });
+        }
+        autocompletion("start_address", "start_lat", "start_lng");
+        autocompletion("end_address", "end_lat", "end_lng");
+    });
+    </script>
+</body>
+</html>
