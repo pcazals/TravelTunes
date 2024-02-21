@@ -6,18 +6,21 @@ from spotipy.oauth2 import SpotifyOAuth
 import os
 import random
 # Assurez-vous que ces variables d'environnement sont définies
-os.environ['SPOTIPY_CLIENT_ID'] = 'xx'
-os.environ['SPOTIPY_CLIENT_SECRET'] = 'xx'
+os.environ['SPOTIPY_CLIENT_ID'] = 'f9635fbad8ec46139660d10a847cab54'
+os.environ['SPOTIPY_CLIENT_SECRET'] = '45905fd16d0d40ee9d50633a61ded4a9'
 os.environ['SPOTIPY_REDIRECT_URI'] = 'http://127.0.0.1:5000'
 
 # Initialisez Spotipy avec l'authentification utilisateur
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="playlist-modify-public"))
-
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="playlist-modify-public", client_id='f9635fbad8ec46139660d10a847cab54',
+                                               client_secret='45905fd16d0d40ee9d50633a61ded4a9',
+                                               redirect_uri='http://127.0.0.1:5000'))
+print(sp.me()['id'])
 def create_playlist_for_trip(duration_minutes, start_addr, end_addr):
     remaining_duration = duration_minutes * 60
     playlist_tracks = []
     while remaining_duration > 0:
         # Rechercher des chansons aléatoires
+
         results = sp.search(q='genre:"children"', type='track', limit=10, offset=random.randint(0, 100))
         tracks = results['tracks']['items']
 
@@ -26,7 +29,7 @@ def create_playlist_for_trip(duration_minutes, start_addr, end_addr):
 
         # Ajouter la chanson à la liste de lecture si sa durée ne dépasse pas la durée restante
         playlist_tracks.append(track['id'])
-        print(track['id'])
+
         remaining_duration -= track['duration_ms'] / 1000
 
 
@@ -39,6 +42,7 @@ def create_playlist_for_trip(duration_minutes, start_addr, end_addr):
     for i in range(0, len(playlist_tracks), 100):
         sp.playlist_add_items(playlist_id=playlist['id'], items=playlist_tracks[i:i+100])
     print(f"Playlist '{playlist['name']}' créée avec succès de '{duration_minutes}'min.")
+    return playlist['external_urls']['spotify']
 
 app = Flask(__name__)
 
@@ -76,9 +80,9 @@ def home():
                 result = f"De {start_address} à {end_address}, durée estimée: {route_info[0]} minutes, Distance: {route_info[1]} km"
             
             if 'create_spotify_playlist' in request.form:
-                create_playlist_for_trip(int(route_info[0]), start_address, end_address)
+                link_spotify = create_playlist_for_trip(int(route_info[0]), start_address, end_address)
                 # Ajoutez une indication dans votre résultat que la playlist a été créée
-                result += " Une playlist Spotify correspondant au trajet a été créée."
+                #result += " Une playlist Spotify correspondant au trajet a été créée."
         
 
         except Exception as e:
