@@ -5,7 +5,7 @@ name: Flask application
 
 on:
   push:
-    branches: [ "Pytest" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -30,12 +30,13 @@ jobs:
         context: .
         load: true
         tags: traveltunes:latest
-    - name: Test
+    - name: Test Docker image
       run: |
         docker run -d -p 5000:5000 traveltunes:latest
         sleep 5 # Donne un peu de temps au conteneur pour démarrer
         curl --retry 10 --retry-delay 5 -v http://127.0.0.1:5000/
 
+### PYTEST
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
