@@ -1,2 +1,3 @@
 Flask==3.0.2
-WazeRouteCalculator=0.15
+WazeRouteCalculator==0.15
+WazeRouteCalculator==0.15
