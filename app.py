@@ -5,22 +5,21 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import os
 import random
-# Assurez-vous que ces variables d'environnement sont définies
-os.environ['SPOTIPY_CLIENT_ID'] = 'f9635fbad8ec46139660d10a847cab54'
-os.environ['SPOTIPY_CLIENT_SECRET'] = '45905fd16d0d40ee9d50633a61ded4a9'
-os.environ['SPOTIPY_REDIRECT_URI'] = 'http://127.0.0.1:5000'
+
+client_id = os.getenv('SPOTIPY_CLIENT_ID')
+client_secret = os.environ.get('SPOTIPY_CLIENT_SECRET')
+redirect_uri = os.environ.get('SPOTIPY_REDIRECT_URI')
+
+print('client scret :', client_secret)
 
 # Initialisez Spotipy avec l'authentification utilisateur
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="playlist-modify-public", client_id='f9635fbad8ec46139660d10a847cab54',
-                                               client_secret='45905fd16d0d40ee9d50633a61ded4a9',
-                                               redirect_uri='http://127.0.0.1:5000'))
-print(sp.me()['id'])
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="playlist-modify-public", client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri))
+
 def create_playlist_for_trip(duration_minutes, start_addr, end_addr):
     remaining_duration = duration_minutes * 60
     playlist_tracks = []
     while remaining_duration > 0:
         # Rechercher des chansons aléatoires
-
         results = sp.search(q='genre:"children"', type='track', limit=10, offset=random.randint(0, 100))
         tracks = results['tracks']['items']
 
@@ -29,9 +28,7 @@ def create_playlist_for_trip(duration_minutes, start_addr, end_addr):
 
         # Ajouter la chanson à la liste de lecture si sa durée ne dépasse pas la durée restante
         playlist_tracks.append(track['id'])
-
         remaining_duration -= track['duration_ms'] / 1000
-
 
     if not playlist_tracks:
         print("Aucune piste trouvée.")
@@ -41,7 +38,8 @@ def create_playlist_for_trip(duration_minutes, start_addr, end_addr):
     playlist = sp.user_playlist_create(sp.me()['id'], name=f"Playlist '{start_addr}' '{end_addr}'Trajet Enfant", public=True)
     for i in range(0, len(playlist_tracks), 100):
         sp.playlist_add_items(playlist_id=playlist['id'], items=playlist_tracks[i:i+100])
-    print(f"Playlist '{playlist['name']}' créée avec succès de '{duration_minutes}'min.")
+
+    print(f"Playlist {playlist['name']} créée avec succès de {duration_minutes}min.")
     return playlist['external_urls']['spotify']
 
 app = Flask(__name__)
@@ -81,14 +79,11 @@ def home():
             
             if 'create_spotify_playlist' in request.form:
                 link_spotify = create_playlist_for_trip(int(route_info[0]), start_address, end_address)
-                # Ajoutez une indication dans votre résultat que la playlist a été créée
-                #result += " Une playlist Spotify correspondant au trajet a été créée."
-        
 
         except Exception as e:
             result = f"Erreur: {str(e)}"
 
-        return render_template('index.html', result=result)
+        return render_template('index.html', result=result, link_spotify=link_spotify)
     else:
         return render_template('index.html', result=None)
 

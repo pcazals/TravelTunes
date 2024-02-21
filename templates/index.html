@@ -62,12 +62,13 @@
             </div>
             <button type="submit" class="btn btn-primary">Calculer</button>
         </form>
-        {% if result %}
-        <br>
-        <div class="alert alert-success" role="alert">
-            Résultat: {{ result }}
-        </div>
+        {% if link_spotify %}
+            <div class="alert alert-success" role="alert">Résultat: {{ result }}</div>
+            <div>Playlist Spotify : <a href="{{ link_spotify }}" target="_blank">Cliquez ici pour ouvrir la playlist</a></div>
+        {% else %}
+            <div>Résultat: {{ result }}</div>
         {% endif %}
+        
     </div>
     <script>
     $(function() {
