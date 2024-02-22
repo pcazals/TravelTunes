@@ -14,7 +14,7 @@ jobs:
       run: env
     - name: Test Env vars
       env:
-        Test: ${{ vars.GITHUB_ENV  }}
+        Test: ${{ vars.SPOTIPY_CLIENT_ID  }}
       run: |
         echo $Test
         echo $Test > test.txt
