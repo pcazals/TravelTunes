@@ -13,7 +13,7 @@ redirect_uri = os.environ.get('SPOTIPY_REDIRECT_URI')
 print('client scret :', client_secret)
 
 # Initialisez Spotipy avec l'authentification utilisateur
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="playlist-modify-public", client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri))
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="playlist-modify-public", client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri, open_browser=False, cache_path="token.txt"))
 print(sp.me()['id'])
 def create_playlist_for_trip(duration_minutes, start_addr, end_addr):
     remaining_duration = duration_minutes * 60
