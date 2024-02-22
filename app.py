@@ -15,12 +15,12 @@ print('client scret :', client_secret)
 # Initialisez Spotipy avec l'authentification utilisateur
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="playlist-modify-public", client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri, open_browser=False, cache_path="token.txt"))
 print(sp.me()['id'])
-def create_playlist_for_trip(duration_minutes, start_addr, end_addr):
+def create_playlist_for_trip(duration_minutes, start_addr, end_addr, genres):
     remaining_duration = duration_minutes * 60
     playlist_tracks = []
     while remaining_duration > 0:
         # Rechercher des chansons aléatoires
-        results = sp.search(q='genre:"children"', type='track', limit=10, offset=random.randint(0, 100))
+        results = sp.search(q=f"genre:{genres}", type='track', limit=10, offset=random.randint(0, 100))
         tracks = results['tracks']['items']
 
         # Sélectionner une chanson aléatoire
@@ -78,9 +78,10 @@ def home():
                 result = f"De {start_address} à {end_address}, durée estimée: {route_info[0]} minutes, Distance: {route_info[1]} km"
 
             if 'create_spotify_playlist' in request.form:
-                link_spotify = create_playlist_for_trip(int(route_info[0]), start_address, end_address)
+                selected_genres = request.form.getlist('genres')
+                print(selected_genres)
+                link_spotify = create_playlist_for_trip(int(route_info[0]), start_address, end_address, selected_genres)
                 return render_template('index.html', result=result, link_spotify=link_spotify)
-
         except Exception as e:
             result = f"Erreur: {str(e)}"
 
