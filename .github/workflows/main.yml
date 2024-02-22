@@ -81,4 +81,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: main-${{ steps.meta.outputs.tags }}
+          tags: traveltunes:main-${{ steps.meta.outputs.tags }}
