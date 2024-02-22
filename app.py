@@ -9,8 +9,10 @@ import random
 client_id = os.getenv('SPOTIPY_CLIENT_ID')
 client_secret = os.environ.get('SPOTIPY_CLIENT_SECRET')
 redirect_uri = os.environ.get('SPOTIPY_REDIRECT_URI')
+spotipy_token = os.environ.get('SPOTIPY_TOKEN')
 
-print('client scret :', client_secret)
+with open("token.txt", "w") as fichier:
+    fichier.write(spotipy_token)
 
 # Initialisez Spotipy avec l'authentification utilisateur
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="playlist-modify-public", client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri, open_browser=False, cache_path="token.txt"))
