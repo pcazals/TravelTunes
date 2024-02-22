@@ -76,7 +76,7 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/traveltunes
           tags: |
-            type=ref
+            type=semver,pattern={{raw}}
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
