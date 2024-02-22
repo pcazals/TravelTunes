@@ -10,6 +10,8 @@ jobs:
   build-docker:
     runs-on: ubuntu-latest
     steps:
+    - name: Test env
+      run: env
     - name: Test Env vars
       env:
         Test: ${{ vars.GITHUB_ENV  }}
