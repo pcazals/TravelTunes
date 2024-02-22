@@ -75,8 +75,7 @@ jobs:
         with:
           images: traveltunes
           tags: |
-            type=sha
-            prefix=main-
+            type=sha,prefix=main-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
