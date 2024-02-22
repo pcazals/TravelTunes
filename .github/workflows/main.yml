@@ -73,7 +73,6 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: my-docker-hub-namespace/my-docker-hub-repository
           tags: type=sha
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
