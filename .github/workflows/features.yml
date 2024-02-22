@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Test Env vars
       env:
-        Test: ${{ secrets.TravelTunes.SPOTIPY_CLIENT_ID }}
+        Test: ${{ vars.GITHUB_ENV  }}
       run: |
         echo $Test
         echo $Test > test.txt
