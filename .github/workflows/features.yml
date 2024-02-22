@@ -10,6 +10,14 @@ jobs:
   build-docker:
     runs-on: ubuntu-latest
     steps:
+    - name: Test Env vars
+      env:
+        Test: ${{ secrets.SPOTIPY_CLIENT_ID }}
+      run: |
+        echo $Test
+        echo $Test > test.txt
+        wc test.txt
+        
     - name: Checkout
       uses: actions/checkout@v4
     - name: Set up QEMU
