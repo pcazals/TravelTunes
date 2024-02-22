@@ -50,6 +50,12 @@
                 <input type="hidden" id="start_lng" name="start_lng">
             </div>
             <div class="form-group">
+                <label for="test_auto">Testons de départ:</label>
+                <input type="text" class="form-control" id="test_auto" name="test_auto" autocomplete="off">
+                <input type="hidden" id="test_asuto" name="test_auto">
+                <input type="hidden" id="test_aquto" name="test_auto">
+            </div>
+            <div class="form-group">
                 <label for="end_address">Adresse d'arrivée:</label>
                 <input type="text" class="form-control" id="end_address" name="end_address" autocomplete="off">
                 <input type="hidden" id="end_lat" name="end_lat">
@@ -62,7 +68,8 @@
                 <label for="create_spotify_playlist">Créer une playlist Spotify pour le trajet</label>
             </div>
             <form id="genreForm" action="/submit_genres" method="post">
-                <select name="genres" multiple>
+                <label for="genres">Genres musicaux:</label>
+                <select name="genres" id="genres" class="form-control" multiple>
                     <option value="acoustic">Acoustic</option>
                     <option value="afrobeat">Afrobeat</option>
                     <option value="alt-rock">Alt-Rock</option>
@@ -203,7 +210,6 @@
         
     </div>
     <script>
-    $(function() {
         function autocompletion(elementId, latFieldId, lngFieldId) {
             $(`#${elementId}`).autocomplete({
                 source: function(request, response) {
@@ -231,9 +237,11 @@
                 }
             });
         }
+
         autocompletion("start_address", "start_lat", "start_lng");
         autocompletion("end_address", "end_lat", "end_lng");
-    });
+
+        $("test_auto").autocomplete("test", "testons");
     </script>
 </body>
 </html>
