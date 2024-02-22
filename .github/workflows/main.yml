@@ -73,6 +73,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
+          images: traveltunes
           tags: type=sha
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
