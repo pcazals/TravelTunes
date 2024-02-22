@@ -73,7 +73,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: tokieur/traveltunes
+          images: ${{ secrets.DOCKER_USERNAME }}/traveltunes
           tags: |
             type=sha,prefix=main-
       - name: Build and push Docker image
