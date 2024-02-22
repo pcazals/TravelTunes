@@ -14,7 +14,7 @@ print('client scret :', client_secret)
 
 # Initialisez Spotipy avec l'authentification utilisateur
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="playlist-modify-public", client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri))
-
+print(sp.me()['id'])
 def create_playlist_for_trip(duration_minutes, start_addr, end_addr):
     remaining_duration = duration_minutes * 60
     playlist_tracks = []
@@ -76,14 +76,15 @@ def home():
                 result = f"De {start_address} à {end_address}, durée estimée: {hours}h{minutes:02d}, Distance: {route_info[1]} km"
             else:
                 result = f"De {start_address} à {end_address}, durée estimée: {route_info[0]} minutes, Distance: {route_info[1]} km"
-            
+
             if 'create_spotify_playlist' in request.form:
                 link_spotify = create_playlist_for_trip(int(route_info[0]), start_address, end_address)
+                return render_template('index.html', result=result, link_spotify=link_spotify)
 
         except Exception as e:
             result = f"Erreur: {str(e)}"
 
-        return render_template('index.html', result=result, link_spotify=link_spotify)
+        return render_template('index.html', result=result)
     else:
         return render_template('index.html', result=None)
 
