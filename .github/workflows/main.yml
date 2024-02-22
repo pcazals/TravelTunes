@@ -74,11 +74,13 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: traveltunes
-          tags: type=sha
+          tags: |
+            type=sha
+            prefix=main-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: traveltunes:main-${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
