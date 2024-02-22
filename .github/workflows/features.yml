@@ -24,7 +24,7 @@ jobs:
         tags: traveltunes:latest
     - name: Test Docker image
       env:
-        SPOTIPY_CLIENT_SECRET: ${{ vars }}
+        SPOTIPY_CLIENT_SECRET: ${{ env.SPOTIPY_CLIENT_ID }}
         SPOTIPY_CLIENT_ID: ${{ vars.SPOTIPY_CLIENT_ID }}
         SPOTIPY_REDIRECT_URI: ${{ vars.SPOTIPY_REDIRECT_URI }}
         SPOTIPY_TOKEN: ${{ vars.SPOTIPY_TOKEN }}
