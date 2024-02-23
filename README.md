@@ -13,7 +13,7 @@ Avant de commencer, assurez-vous d'avoir installé Docker sur votre machine. Vou
 
 ## Configuration
 
-1. Rendez-vous sur [Dashboard Spotify](https://developer.spotify.com/dashboard/).
+1. Rendez-vous sur [Dashboard Spotify](https://developer.spotify.com/dashboard/), vous connecter et se rendre sur le Dashboard.
 2. Créez une nouvelle application pour obtenir votre `SPOTIPY_CLIENT_ID` et `SPOTIPY_CLIENT_SECRET`.
 ![alt text](https://github.com/pcazals/traveltunes/blob/main/ressource/createapp.png)
 ![alt text](https://github.com/pcazals/traveltunes/blob/main/ressource/basicinfo.png)
@@ -43,7 +43,7 @@ Ouvrir le lien générer en console et se connecter avec spotify et autoriser l'
 Ouvrez un terminal et suivez ces étapes pour construire et exécuter le conteneur Docker de TravelTunes :
 
 1. Clonez le dépôt ou téléchargez l'application TravelTunes : 
-``git clone https://github.com/pcazals/TravelTunes)`` 
+``git clone https://github.com/pcazals/traveltunes)`` 
 ``cd TravelTunes``
 2. Construisez l'image Docker :
 ``docker build -t TravelTunes:latest .``
