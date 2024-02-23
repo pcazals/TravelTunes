@@ -9,25 +9,35 @@ import random
 client_id = os.getenv('SPOTIPY_CLIENT_ID')
 client_secret = os.environ.get('SPOTIPY_CLIENT_SECRET')
 redirect_uri = os.environ.get('SPOTIPY_REDIRECT_URI')
-spotipy_token = os.environ.get('SPOTIPY_TOKEN')
 
+# Création du fichier token.txt utilisé par SpotifyOAuth()
+spotipy_token = os.environ.get('SPOTIPY_TOKEN')
 with open("token.txt", "w") as fichier:
     fichier.write(spotipy_token)
 
 # Initialisez Spotipy avec l'authentification utilisateur
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="playlist-modify-public", client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri, open_browser=False, cache_path="token.txt"))
 print(sp.me()['id'])
+
+
 def create_playlist_for_trip(duration_minutes, start_addr, end_addr, genres):
     remaining_duration = duration_minutes * 60
     playlist_tracks = []
     index = 0
+    # Ajout des tracks dans la liste playlist_tracks
     while remaining_duration > 0:
         # Rechercher des chansons aléatoires
         results = sp.search(q=f"genre:{genres[index]}", type='track', limit=10, offset=random.randint(0, 100))
         tracks = results['tracks']['items']
+        # Changement de genre si il y en a plusieurs
         index = (index + 1) % len(genres)
-        # Sélectionner une chanson aléatoire
+
+        # Sélectionner une chanson aléatoire sur les 10 tracks renvoyés par spotify
         track = random.choice(tracks)
+
+        # Si la tracks séléctionner est plus longue que 350s que notre traget on choisi une autre traget
+        if remaining_duration - (track['duration_ms'] / 1000) < -350:
+            continue
 
         # Ajouter la chanson à la liste de lecture si sa durée ne dépasse pas la durée restante
         playlist_tracks.append(track['id'])
@@ -39,11 +49,14 @@ def create_playlist_for_trip(duration_minutes, start_addr, end_addr, genres):
     
     # Création de la playlist
     playlist = sp.user_playlist_create(sp.me()['id'], name=f"Playlist {' '.join(genres)} : '{start_addr}' '{end_addr}'", public=True)
+    # Ajout par bloque de 100 (limitation Spotify) les tracks
     for i in range(0, len(playlist_tracks), 100):
         sp.playlist_add_items(playlist_id=playlist['id'], items=playlist_tracks[i:i+100])
 
     print(f"Playlist {playlist['name']} créée avec succès de {duration_minutes}min.")
-    return playlist['external_urls']['spotify']
+    return [playlist['external_urls']['spotify'], playlist['id']]
+
+
 
 app = Flask(__name__)
 
@@ -82,8 +95,7 @@ def home():
 
             if 'create_spotify_playlist' in request.form:
                 selected_genres = request.form.getlist('genres')
-                print(selected_genres)
-                link_spotify = create_playlist_for_trip(int(route_info[0]), start_address, end_address, selected_genres)
+                link_spotify = create_playlist_for_trip(int(route_info[0]), start_address, end_address, selected_genres)[0]
                 return render_template('index.html', result=result, link_spotify=link_spotify, selected_genres=' '.join(selected_genres))
         except Exception as e:
             result = f"Erreur: {str(e)}"
