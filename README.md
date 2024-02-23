@@ -1,10 +1,11 @@
 # TravelTunes
 ![alt text](https://github.com/pcazals/traveltunes/blob/main/ressource/logo.jpg)
-TravelTunes est une application innovante qui combine le calcul de temps de trajet via l'API de Waze avec la création d'une playlist personnalisée sur <img src="{https://img.shields.io/badge/Spotify-1ED760?&style=for-the-badge&logo=spotify&logoColor=white}" />, correspondant à la durée de votre trajet. Que vous soyez en route pour le travail, en voyage, ou simplement en quête d'une expérience musicale sur mesure pendant vos déplacements, TravelTunes est là pour enrichir chaque trajet.
+
+TravelTunes est une application innovante qui combine le calcul de temps de trajet via l'API de Waze avec la création d'une playlist personnalisée sur ![image]({https://img.shields.io/badge/Spotify-1ED760?&style=for-the-badge&logo=spotify&logoColor=white}), correspondant à la durée de votre trajet. Que vous soyez en route pour le travail, en voyage, ou simplement en quête d'une expérience musicale sur mesure pendant vos déplacements, TravelTunes est là pour enrichir chaque trajet.
 
 ## Fonctionnement
 
-TravelTunes interroge l'API de Waze pour déterminer le temps de trajet entre deux points, puis utilise l'API de <img src="{https://img.shields.io/badge/Spotify-1ED760?&style=for-the-badge&logo=spotify&logoColor=white}" /> pour générer une playlist qui correspond exactement à la durée du trajet. Cette playlist est personnalisée en fonction de vos préférences musicales, vous offrant ainsi une expérience sur mesure.
+TravelTunes interroge l'API de Waze pour déterminer le temps de trajet entre deux points, puis utilise l'API de ![image]({https://img.shields.io/badge/Spotify-1ED760?&style=for-the-badge&logo=spotify&logoColor=white}) pour générer une playlist qui correspond exactement à la durée du trajet. Cette playlist est personnalisée en fonction de vos préférences musicales, vous offrant ainsi une expérience sur mesure.
 
 ## Prérequis
 
