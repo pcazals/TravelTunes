@@ -50,6 +50,8 @@ Ouvrez un terminal et suivez ces étapes pour construire et exécuter le contene
 3. Lancez le conteneur Docker :
 ``docker run -d -e SPOTIPY_CLIENT_SECRET=<VotreSecretClient> -e SPOTIPY_CLIENT_ID=<VotreClientId> -e SPOTIPY_REDIRECT_URI=<VotreURIdeRedirection> -e SPOTIPY_TOKEN=<VotreToken> -p 5000:5000 TravelTuness:latest``
 
+4. Accéder à l'application sur `127.0.0.1:5000`
+
 Remplacez, `<VotreSecretClient>`, `<VotreClientId>`, `<VotreURIdeRedirection>`, et `<VotreToken>` par vos informations de dépôt et Spotify personnelles.
 
 ## Auteurs
