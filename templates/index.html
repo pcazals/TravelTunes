@@ -225,7 +225,7 @@
         <br>
         {% if link_spotify %}
             <div class="alert alert-success" role="alert">Résultat: {{ result }}</div>
-            <div>Playlist Spotify : <a href="{{ link_spotify }}" target="_blank">Cliquez ici pour ouvrir la playlist</a></div>
+            <div class="alert alert-info">Playlist Spotify {{ selected_genres }} : <a href="{{ link_spotify }}" target="_blank">Cliquez ici pour ouvrir la playlist</a></div>
         {% else %}
             <div class="alert alert-success" role="alert">Résultat: {{ result }}</div>
         {% endif %}
