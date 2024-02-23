@@ -20,11 +20,12 @@ print(sp.me()['id'])
 def create_playlist_for_trip(duration_minutes, start_addr, end_addr, genres):
     remaining_duration = duration_minutes * 60
     playlist_tracks = []
+    index = 0
     while remaining_duration > 0:
         # Rechercher des chansons aléatoires
-        results = sp.search(q=f"genre:{genres}", type='track', limit=10, offset=random.randint(0, 100))
+        results = sp.search(q=f"genre:{genres[index]}", type='track', limit=10, offset=random.randint(0, 100))
         tracks = results['tracks']['items']
-
+        index = (index + 1) % len(genres)
         # Sélectionner une chanson aléatoire
         track = random.choice(tracks)
 
@@ -37,7 +38,7 @@ def create_playlist_for_trip(duration_minutes, start_addr, end_addr, genres):
         return
     
     # Création de la playlist
-    playlist = sp.user_playlist_create(sp.me()['id'], name=f"Playlist '{start_addr}' '{end_addr}'Trajet Enfant", public=True)
+    playlist = sp.user_playlist_create(sp.me()['id'], name=f"Playlist {' '.join(genres)} : '{start_addr}' '{end_addr}'", public=True)
     for i in range(0, len(playlist_tracks), 100):
         sp.playlist_add_items(playlist_id=playlist['id'], items=playlist_tracks[i:i+100])
 
@@ -83,7 +84,7 @@ def home():
                 selected_genres = request.form.getlist('genres')
                 print(selected_genres)
                 link_spotify = create_playlist_for_trip(int(route_info[0]), start_address, end_address, selected_genres)
-                return render_template('index.html', result=result, link_spotify=link_spotify)
+                return render_template('index.html', result=result, link_spotify=link_spotify, selected_genres=' '.join(selected_genres))
         except Exception as e:
             result = f"Erreur: {str(e)}"
 
