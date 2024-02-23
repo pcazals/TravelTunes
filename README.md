@@ -14,8 +14,28 @@ Avant de commencer, assurez-vous d'avoir installé Docker sur votre machine. Vou
 
 1. Rendez-vous sur [Dashboard Spotify](https://developer.spotify.com/dashboard/).
 2. Créez une nouvelle application pour obtenir votre `SPOTIPY_CLIENT_ID` et `SPOTIPY_CLIENT_SECRET`.
+![alt text](https://github.com/pcazals/ressource/createapp.png)
+![alt text](https://github.com/pcazals/ressource/basicinfo.png)
+
 3. Notez l'URI de redirection que vous avez configurée pour votre application dans le Dashboard Spotify, cela sera votre `SPOTIPY_REDIRECT_URI`.
-4. Si nécessaire, obtenez un `SPOTIPY_TOKEN` en suivant la documentation de l'API Spotify.
+4. Si nécessaire, obtenez un `SPOTIPY_TOKEN` en suivant la documentation ci dessous.
+5. Une fois les valeurs récupérées, il suffit de les intégrer dans votre environnement avec la commande ``export <token>``
+
+### Création du SPOTIPY_TOKEN
+- Se rendre dans le fichier ``app.py`` modifier la Ligne 18 et enlever 
+``e, cache_path="token.txt"``
+
+- Lancer le script app.py avec ``python3 app.py``
+![alt text](https://github.com/pcazals/ressource/script1.png)
+Ouvrir le lien générer en console et se connecter avec spotify et autoriser l'accès. 
+
+- Une fois la redirection efféctuée, copier le lien dans la console
+![alt text](https://github.com/pcazals/ressource/script2.png)
+
+- le fichier .cache vient d'être généré
+![alt text](https://github.com/pcazals/ressource/script3.png)
+
+- Copier sont contenu dans la varibale d'env SPOTIPY_TOKEN 
 
 ## Installation
 
@@ -29,7 +49,7 @@ Ouvrez un terminal et suivez ces étapes pour construire et exécuter le contene
 3. Lancez le conteneur Docker :
 ``docker run -d -e SPOTIPY_CLIENT_SECRET=<VotreSecretClient> -e SPOTIPY_CLIENT_ID=<VotreClientId> -e SPOTIPY_REDIRECT_URI=<VotreURIdeRedirection> -e SPOTIPY_TOKEN=<VotreToken> -p 5000:5000 TravelTuness:latest``
 
-Remplacez `<URLDuDépôt>`, `<VotreSecretClient>`, `<VotreClientId>`, `<VotreURIdeRedirection>`, et `<VotreToken>` par vos informations de dépôt et Spotify personnelles.
+Remplacez, `<VotreSecretClient>`, `<VotreClientId>`, `<VotreURIdeRedirection>`, et `<VotreToken>` par vos informations de dépôt et Spotify personnelles.
 
 ## Auteurs
 
