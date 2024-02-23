@@ -54,4 +54,4 @@ Remplacez, `<VotreSecretClient>`, `<VotreClientId>`, `<VotreURIdeRedirection>`, 
 
 ## Auteurs
 
-* **Paul CAZALS** _alias_ [@pcazals](https://github.com/pcazals)het(upso`h)
+* **Paul CAZALS & Bastien REBOULET ** _alias_ [@pcazals](https://github.com/pcazals) [@tokieur](https://github.com/tokieur)
