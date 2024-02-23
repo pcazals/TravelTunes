@@ -1,6 +1,6 @@
-# TravelTuness
+# TravelTunes
 
-TravelTuness est une application innovante qui combine le calcul de temps de trajet via l'API de Waze avec la création d'une playlist personnalisée sur Spotify, correspondant à la durée de votre trajet. Que vous soyez en route pour le travail, en voyage, ou simplement en quête d'une expérience musicale sur mesure pendant vos déplacements, TravelTunes est là pour enrichir chaque trajet.
+TravelTunes est une application innovante qui combine le calcul de temps de trajet via l'API de Waze avec la création d'une playlist personnalisée sur Spotify, correspondant à la durée de votre trajet. Que vous soyez en route pour le travail, en voyage, ou simplement en quête d'une expérience musicale sur mesure pendant vos déplacements, TravelTunes est là pour enrichir chaque trajet.
 
 ## Fonctionnement
 
@@ -22,12 +22,13 @@ Avant de commencer, assurez-vous d'avoir installé Docker sur votre machine. Vou
 Ouvrez un terminal et suivez ces étapes pour construire et exécuter le conteneur Docker de TravelTunes :
 
 1. Clonez le dépôt ou téléchargez l'application TravelTunes : 
-``git clone <[URLDuDépôt](https://github.com/pcazals/TravelTuness)>`` 
+``git clone https://github.com/pcazals/TravelTunes)`` 
 ``cd TravelTunes``
 2. Construisez l'image Docker :
-``docker build -t TravelTuness:latest .``
+``docker build -t TravelTunes:latest .``
 3. Lancez le conteneur Docker :
 ``docker run -d -e SPOTIPY_CLIENT_SECRET=<VotreSecretClient> -e SPOTIPY_CLIENT_ID=<VotreClientId> -e SPOTIPY_REDIRECT_URI=<VotreURIdeRedirection> -e SPOTIPY_TOKEN=<VotreToken> -p 5000:5000 TravelTuness:latest``
+
 Remplacez `<URLDuDépôt>`, `<VotreSecretClient>`, `<VotreClientId>`, `<VotreURIdeRedirection>`, et `<VotreToken>` par vos informations de dépôt et Spotify personnelles.
 
 ## Auteurs
